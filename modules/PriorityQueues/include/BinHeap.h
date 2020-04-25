@@ -2,11 +2,10 @@
 #define PRIORITYQUEUES_INCLUDE_BINHEAP_H_
 
 #include <vector>
-#include <algorithm>
 
 using namespace std;
 
-struct BinElem {
+struct BinElem  {
   int weight;  // вес вершины
   int num;  // номер вершины
   BinElem* parent;  // родитель вершины

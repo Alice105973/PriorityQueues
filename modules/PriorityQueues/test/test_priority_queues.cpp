@@ -1,5 +1,6 @@
 #include <random>
 #include <ctime>
+#include <iostream>
 #include <gtest/gtest.h>
 #include "../include/DHeap.h"
 #include "../include/BinHeap.h"
@@ -239,4 +240,27 @@ TEST(correctness, correct_BinHeap_Dijkstra) {
 
   // Act & Assert
   ASSERT_EQ(Dijkstra(graph, &A, &vec), S);
+}
+
+TEST(correctness, correct_minimum_extraction_FibHeap) {
+  // Arrange
+  FibHeap A;
+  vector<FibElem> vec(10);
+  vector<pair<int, int>> S;
+  for (int i = 0; i < 10; i++) {
+    vec[i] = FibElem(i, rand() % 10);
+    A.insert(&vec[i]);
+  }
+  // Act
+  for (int i = 0; i < 2; i++)
+  {
+    S.push_back(A.extractMin());
+  }
+
+  // Assert
+  bool corr = 1;
+  for (int i = 0; i < S.size() - 1; i++)
+    if (S[i].second > S[i + 1].second)
+      corr = 0;
+  ASSERT_EQ(corr, true);
 }

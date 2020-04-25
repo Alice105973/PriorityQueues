@@ -13,7 +13,7 @@ void FibElem::link(FibElem* x) {
   if (child == NULL) {
     child = x;
     x->left = x;
-    x->right = right;
+    x->right = x;
   } else {
     child->right->left = x;
     x->right = child->right;
@@ -99,26 +99,26 @@ void FibHeap::consolidate() {
 }
 
 pair<int, int> FibHeap::extractMin() {
-  FibElem* z = min;
-  if (min == NULL)
-    return pair<int, int>(-1, -1);
-  FibElem* x = z->child;
-  FibElem* nextx = z->child;
-  if (x != nextx) {
+  FibElem* z = min;  // минимальный элемент
+  if (min == NULL)  // если куча пуста
+    return pair<int, int>(-1, -1);  // вернуть мусор
+  FibElem* x = z->child;  // перейти к детям
+  n--;  // уменьшить количество элементов
+  if (x != NULL) {  // если дети есть
+    FibElem* nextx = x->right;  // следующий элемент
     do {
-      insert(x);
+      insert(x);  // добавить x в корневой список
       x = nextx;
-      nextx = nextx->right;
-    } while (x != z->child);
+      nextx = nextx->right;  // следующий шаг
+    } while (nextx != z->child);  // пока список не закончился
   }
-  if (z == z->right) {
-    min = NULL;
-  } else {
+  if (z == z->right && z->degree == 0) {  // если вершина была единственной и не имела потомков
+    min = NULL;  // куча пуста
+  } else {  // иначе
   z->left->right = z->right;
-  z->right->left = z->left;
-  min = z->right;
-  consolidate();
+  z->right->left = z->left;  // удалить z из корневого списка
+  min = z->right;  // минимум указывает на любую другую вершину
+  consolidate();  // уплотнить
   }
-  n--;
-  return pair<int, int>(z->num, z->weight);
+  return pair<int, int>(z->num, z->weight);  // вернуть минимум
 }

@@ -31,18 +31,22 @@ struct FibElem {
     parent = NULL;
     child = NULL;
   }
-  void link(FibElem* x);
+  void link(FibElem* x);  // объединение деревьев одной степени
 };
 
 class FibHeap {
-  FibElem* min = NULL;  // минимальный элемент
-  void mergeRLists(FibHeap* A);  // объединение корневых списков
   int n = 0;  // общее число всех вершин
+  FibElem* min = NULL;  // минимальный элемент
+  void relax(int v, FibElem* u, int uv);  // релаксация
+  void decreaseKey(FibElem* u, int newWeight);
+  void mergeRLists(FibHeap* A);  // объединение корневых списков
+  void cut(FibElem* x, FibElem* y);  // отрезать x от y
+  void cascadingCut(FibElem* y);
+  void unite(FibHeap* A);  // объединение двух куч
+  void consolidate();  // уплотнение
 public:
   int getN() { return n; }
   void insert(FibElem* x);  // вставка нового элемента
-  void unite(FibHeap* A);  // объединение двух куч
-  void consolidate();  // уплотнение
   pair<int, int> extractMin();  // извлечение минимума
   friend vector<pair<int, int>> Dijkstra(const vector < vector<pair<int, int>>>& graph, FibHeap* q, vector<FibElem>* data);
 };

@@ -5,6 +5,44 @@
 
 using namespace std;
 
+vector<pair<int, int>> Dijkstra(const vector < vector<pair<int, int>>>& graph, FibHeap* q, vector<FibElem>* data) {
+  vector<pair<int, int>> S;  // список вершин, для которых dist уже просчитана
+  FibElem* u = NULL;  // вершина, для которой проводится релаксация
+  while (q->getN()) {
+    pair<int, int> v = q->extractMin();  // текущая вершина, (номер, вес)
+    S.push_back(v);  // занести в список обработанных
+    int amount = graph[v.first].size();  // количество смежных вершин
+    for (int i = 0; i < amount; i++) {  // для всех смежных вершин
+      int unum = graph[v.first][i].first;  // номер i-той смежной с v вершины
+      u = &(*data)[0];  // начинаем поиск с первой вершины
+      int j = 0;
+      while (u->num != unum) {  // пока не найдена вершина с нужным номером
+        j++;
+        u = &(*data)[j];  // перейти к следующей вершине
+      }
+      q->relax(v.second, u, graph[v.first][i].second);
+    }
+  }
+  return S;
+}
+
+
+void FibHeap::relax(int vweight, FibElem* u, int uvweight) {
+  if (vweight + uvweight < u->weight) {  // если найден более короткий путь
+    decreaseKey(u, vweight + uvweight);  // обновить длину пути
+  }
+}
+
+void FibHeap::decreaseKey(FibElem* u, int newWeight) {
+  u->weight = newWeight;  // обновить вес
+  FibElem* y = u->parent;  // перейти к родителю
+  if (y != NULL && u->weight < y->weight) {  // если y - не корень
+    // и его вес больше веса потомка
+    cut(u, y);  // отрезать u
+    cascadingCut(y);
+  }
+}
+
 void FibElem::link(FibElem* x) {
   degree++;  // увеличить степень текущей вершины
   x->left->right = x->right;
@@ -21,6 +59,30 @@ void FibElem::link(FibElem* x) {
     x->left = child;  // включить x в список детей текущего узла
   }
   x->mark = false;  // x не помечена
+}
+
+void FibHeap::cut(FibElem* x, FibElem* y) {
+  if (y->degree == 1) {  // если x - единственный ребенок
+    y->child = NULL;  // очистить дочерний список
+  } else {  // иначе удалить x из дочернего списка
+    x->left->right = x->right;
+    x->right->left = x->left;
+  }
+  y->degree--;  // уменьшить степень y
+  insert(x);  // добавить x в корневой список
+  n -= pow(2, x->degree);  // компенсировать лишние добавленне вершины
+}
+  
+void FibHeap::cascadingCut(FibElem* y) {
+  FibElem* z = y->parent;  // подняться к родителю
+  if (z == NULL)  // если y - корень
+    return;  // завершить
+  if (y->mark == false) {  // если y непомечен
+    y->mark = true;  // пометить
+  } else {  // иначе
+    cut(y, z);  // отрезать y от z
+    cascadingCut(z);  // рекурсивно повторить
+  }
 }
 
 void FibHeap::insert(FibElem* x) {

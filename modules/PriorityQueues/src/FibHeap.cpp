@@ -10,11 +10,11 @@ void FibElem::link(FibElem* x) {
   x->left->right = x->right;
   x->right->left = x->left; // удалить x из корневого списка
   x->parent = this;  // назначить текущий узел родителем x
-  if (child == NULL) {
-    child = x;
+  if (child == NULL) {  // если детей не было
+    child = x;  // назначить x единственным ребенком
     x->left = x;
     x->right = x;
-  } else {
+  } else {  // иначе
     child->right->left = x;
     x->right = child->right;
     child->right = x;
@@ -24,10 +24,9 @@ void FibElem::link(FibElem* x) {
 }
 
 void FibHeap::insert(FibElem* x) {
-  x->degree = 0;
-  x->parent = NULL;
-  x->mark = 0;  // очистить связи
-  n++;  // увеличить количество вершин
+  n += pow(2, x->degree);
+  x->parent = NULL;  // очистить связи
+  x->mark = 0;
   if (min == NULL) {  // если куча пуста
     x->left = x;
     x->right = x;  // зациклить список
@@ -69,27 +68,39 @@ void FibHeap::consolidate() {
     return;
   vector<FibElem*> A(n, NULL);  // вспомогательный массив
   // в ячейке с номером i находится указатель на корень степени i
+  int d;  // степень текущей вершины
   FibElem* x = min;  // текущая вершина
   FibElem* y;  // вершина, сравниваемая с текущей
-  FibElem* nextx = x->right;  // следующая вершина корневого списка
-  do {
-    int d = x->degree;  // степень x
+  vector<FibElem*> rList;  // вспомогательный массив для хранения
+  // начального корневого списка в начальном порядке
+  rList.push_back(min);
+  x = x->right;
+  while (x != min) {
+    rList.push_back(x);
+    x->left = x;
+    x = x->right;
+    x->left->right = x->left;
+  }  // заполнить вспомогательный массив, разорвав все связи
+  min->left = min;
+  min->right = min;
+  for (size_t i = 0; i < rList.size(); i++) {  // для каждой вершины корневого списка
+    x = rList[i];  // обновить значение вершины
+    d = x->degree;  // значение степени
     while (A[d] != NULL) {  // пока есть одинаковые деревья
-      y = A[d];  // получить указатель на дерево с той же степенью
-      if (x->weight > y->weight) {  // если вес текущей вершины > веса y
+      y = A[d];  // дерево с той же степенью
+      if (x->weight > y->weight) {
         FibElem* tmp = x;
         x = y;
-        y = tmp;  // поменять местами
+        y = tmp;
       }
-      x->link(y);  // объединить деревья
-      A[d] = NULL;  // очистить ячейку
+      x->link(y);  // присоединить больший узел к меньшему
+      A[d] = NULL;  // обнулить текущий элемент
       d++;  // увеличить степень
     }
-    A[d] = x;  // записать полученное дерево в свободную вершину
-    x = nextx;
-    nextx = nextx->right;  // следующий шаг
-  } while (x != min);  // пока корневой список не закончился
+    A[d] = x;  // записать полученное дерево
+  }
   min = NULL;  // очистить кучу
+  n = 0;
   // добавить получившиеся деревья в кучу
   for (int i = 0; i < A.size(); i++) {
     if (A[i] != NULL) {
@@ -106,11 +117,11 @@ pair<int, int> FibHeap::extractMin() {
   n--;  // уменьшить количество элементов
   if (x != NULL) {  // если дети есть
     FibElem* nextx = x->right;  // следующий элемент
-    do {
+    for (int i = 0; i < z->degree; i++) {  // пока список детей не закончился
       insert(x);  // добавить x в корневой список
       x = nextx;
       nextx = nextx->right;  // следующий шаг
-    } while (nextx != z->child);  // пока список не закончился
+    }
   }
   if (z == z->right && z->degree == 0) {  // если вершина была единственной и не имела потомков
     min = NULL;  // куча пуста

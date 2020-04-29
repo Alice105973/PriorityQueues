@@ -88,7 +88,12 @@ void DHeap::relax(int vweight, int unum, int uvweight) {
   }
 }
 
-vector<int> Dijkstra(const vector < vector<pair<int, int>>>& graph, DHeap q) {
+vector<int> D_Dijkstra(const vector < vector<pair<int, int>>>& graph) {
+  DHeap q;
+  q.insert(0, 0);
+  for (size_t i = 1; i < 10; i++) {
+    q.insert(i, INT_MAX);
+  }  // дополнительная память для кучи
   vector<int> S(graph.size());  // список вершин, для которых dist уже просчитана
   while (q.n) {
     pair<int, int> v = q.extractMin();  // текущая вершина

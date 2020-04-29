@@ -5,22 +5,32 @@
 
 using namespace std;
 
-vector<int> Dijkstra(const vector < vector<pair<int, int>>>& graph, FibHeap* q, vector<FibElem>* data) {
+vector<int> Fib_Dijkstra(const vector < vector<pair<int, int>>>& graph) {
+  FibHeap q;
+  vector<FibElem> data(graph.size());
+  FibElem a(0, 0);
+  data[0] = a;
+  q.insert(&data[0]);
+  for (size_t i = 1; i < graph.size(); i++) {
+    FibElem c(i, INT_MAX);
+    data[i] = c;
+    q.insert(&data[i]);
+  }  // дополнительная память для кучи
   vector<int> S(graph.size());  // список вершин, для которых dist уже просчитана
   FibElem* u = NULL;  // вершина, для которой проводится релаксация
-  while (q->getN()) {
-    pair<int, int> v = q->extractMin();  // текущая вершина, (номер, вес)
+  while (q.getN()) {
+    pair<int, int> v = q.extractMin();  // текущая вершина, (номер, вес)
     S[v.first] = v.second;  // занести в список обработанных
     int amount = graph[v.first].size();  // количество смежных вершин
     for (int i = 0; i < amount; i++) {  // для всех смежных вершин
       int unum = graph[v.first][i].first;  // номер i-той смежной с v вершины
-      u = &(*data)[0];  // начинаем поиск с первой вершины
+      u = &data[0];  // начинаем поиск с первой вершины
       int j = 0;
       while (u->num != unum) {  // пока не найдена вершина с нужным номером
         j++;
-        u = &(*data)[j];  // перейти к следующей вершине
+        u = &data[j];  // перейти к следующей вершине
       }
-      q->relax(v.second, u, graph[v.first][i].second);
+      q.relax(v.second, u, graph[v.first][i].second);
     }
   }
   return S;

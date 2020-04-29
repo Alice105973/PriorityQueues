@@ -31,7 +31,7 @@ public:
   pair<int, int> extractMin();  // извлечь минимум
   void insert(BinElem* h);  // вставить элемент
   int getN() { return n; }  // получить размер
-  friend vector<int> Dijkstra(const vector < vector<pair<int, int>>>& graph, BinHeap* q, vector<BinElem>* data);
+  friend vector<int> Bin_Dijkstra(const vector < vector<pair<int, int>>>& graph);
 };
 
 #endif  // PRIORITYQUEUES_INCLUDE_BINHEAP_H_

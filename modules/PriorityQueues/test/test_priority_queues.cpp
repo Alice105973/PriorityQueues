@@ -2,11 +2,17 @@
 #include <ctime>
 #include <iostream>
 #include <gtest/gtest.h>
+#include "../include/Utils.h"
 #include "../include/DHeap.h"
 #include "../include/BinHeap.h"
 #include "../include/FibHeap.h"
 
 using namespace std;
+
+TEST(no_exceptions, can_generate_graph) {
+  // Arrange & Act & Assert
+  ASSERT_NO_THROW(generateGraph(10, 45));
+}
 
 TEST(no_exceptions, can_create_DHeap) {
   // Arrange & Act & Assert
@@ -170,11 +176,57 @@ TEST(correctness, correct_minimum_extraction_FibHeap) {
   ASSERT_EQ(corr, true);
 }
 
+TEST(correctness, correct_label_Dijkstra) {
+  // Arrange
+  vector<vector<pair<int, int>>> graph(10);
+  vector<int> S(10);
+  graph[0].push_back(pair<int, int>(1, 1));
+  graph[0].push_back(pair<int, int>(2, 0));
+  graph[0].push_back(pair<int, int>(6, 5));
+  graph[0].push_back(pair<int, int>(8, 9));
+  graph[1].push_back(pair<int, int>(9, 13));
+  graph[1].push_back(pair<int, int>(0, 1));
+  graph[1].push_back(pair<int, int>(5, 1));
+  graph[2].push_back(pair<int, int>(0, 0));
+  graph[2].push_back(pair<int, int>(8, 1));
+  graph[2].push_back(pair<int, int>(4, 4));
+  graph[2].push_back(pair<int, int>(3, 3));
+  graph[3].push_back(pair<int, int>(2, 3));
+  graph[3].push_back(pair<int, int>(7, 3));
+  graph[4].push_back(pair<int, int>(7, 1));
+  graph[4].push_back(pair<int, int>(2, 4));
+  graph[4].push_back(pair<int, int>(8, 1));
+  graph[5].push_back(pair<int, int>(6, 1));
+  graph[5].push_back(pair<int, int>(1, 1));
+  graph[6].push_back(pair<int, int>(5, 1));
+  graph[6].push_back(pair<int, int>(0, 5));
+  graph[7].push_back(pair<int, int>(4, 1));
+  graph[7].push_back(pair<int, int>(3, 3));
+  graph[8].push_back(pair<int, int>(0, 9));
+  graph[8].push_back(pair<int, int>(2, 1));
+  graph[8].push_back(pair<int, int>(4, 1));
+  graph[9].push_back(pair<int, int>(1, 13));
+
+  S[0] = 0;
+  S[1] = 1;
+  S[2] = 0;
+  S[3] = 3;
+  S[4] = 2;
+  S[5] = 2;
+  S[6] = 3;
+  S[7] = 3;
+  S[8] = 1;
+  S[9] = 14;
+
+  // Act & Assert
+  ASSERT_EQ(S, Dijkstra(graph));
+}
+
 TEST(correctness, correct_DHeap_Dijkstra) {
   // Arrange
   vector<vector<pair<int, int>>> graph(10);
   DHeap A;
-  vector<pair<int, int>> S;
+  vector<int> S(10);
   graph[0].push_back(pair<int, int>(1, 1));
   graph[0].push_back(pair<int, int>(2, 0));
   graph[0].push_back(pair<int, int>(6, 5));
@@ -207,16 +259,16 @@ TEST(correctness, correct_DHeap_Dijkstra) {
     A.insert(i, 1000);
   }
 
-  S.push_back(pair<int, int>(0, 0));
-  S.push_back(pair<int, int>(2, 0));
-  S.push_back(pair<int, int>(1, 1));
-  S.push_back(pair<int, int>(8, 1));
-  S.push_back(pair<int, int>(5, 2));
-  S.push_back(pair<int, int>(4, 2));
-  S.push_back(pair<int, int>(3, 3));
-  S.push_back(pair<int, int>(6, 3));
-  S.push_back(pair<int, int>(7, 3));
-  S.push_back(pair<int, int>(9, 14));
+  S[0] = 0;
+  S[1] = 1;
+  S[2] = 0;
+  S[3] = 3;
+  S[4] = 2;
+  S[5] = 2;
+  S[6] = 3;
+  S[7] = 3;
+  S[8] = 1;
+  S[9] = 14;
 
   // Act & Assert
   ASSERT_EQ(Dijkstra(graph, A), S);
@@ -227,7 +279,7 @@ TEST(correctness, correct_BinHeap_Dijkstra) {
   vector<vector<pair<int, int>>> graph(10);
   BinHeap A;
   vector<BinElem> vec(10);
-  vector<pair<int, int>> S;
+  vector<int> S(10);
   graph[0].push_back(pair<int, int>(1, 1));
   graph[0].push_back(pair<int, int>(2, 0));
   graph[0].push_back(pair<int, int>(6, 5));
@@ -264,16 +316,16 @@ TEST(correctness, correct_BinHeap_Dijkstra) {
     A.insert(&vec[i]);
   }
 
-  S.push_back(pair<int, int>(0, 0));
-  S.push_back(pair<int, int>(2, 0));
-  S.push_back(pair<int, int>(1, 1));
-  S.push_back(pair<int, int>(8, 1));
-  S.push_back(pair<int, int>(5, 2));
-  S.push_back(pair<int, int>(4, 2));
-  S.push_back(pair<int, int>(6, 3));
-  S.push_back(pair<int, int>(7, 3));
-  S.push_back(pair<int, int>(3, 3));
-  S.push_back(pair<int, int>(9, 14));
+  S[0] = 0;
+  S[1] = 1;
+  S[2] = 0;
+  S[3] = 3;
+  S[4] = 2;
+  S[5] = 2;
+  S[6] = 3;
+  S[7] = 3;
+  S[8] = 1;
+  S[9] = 14;
 
   // Act & Assert
   ASSERT_EQ(Dijkstra(graph, &A, &vec), S);
@@ -284,7 +336,7 @@ TEST(correctness, correct_FibHeap_Dijkstra) {
   vector<vector<pair<int, int>>> graph(10);
   FibHeap A;
   vector<FibElem> vec(10);
-  vector<pair<int, int>> S;
+  vector<int> S(10);
   graph[0].push_back(pair<int, int>(1, 1));
   graph[0].push_back(pair<int, int>(2, 0));
   graph[0].push_back(pair<int, int>(6, 5));
@@ -321,17 +373,47 @@ TEST(correctness, correct_FibHeap_Dijkstra) {
     A.insert(&vec[i]);
   }
 
-  S.push_back(pair<int, int>(0, 0));
-  S.push_back(pair<int, int>(1, 1));
-  S.push_back(pair<int, int>(2, 0));
-  S.push_back(pair<int, int>(8, 1));
-  S.push_back(pair<int, int>(5, 2));
-  S.push_back(pair<int, int>(4, 2));
-  S.push_back(pair<int, int>(3, 3));
-  S.push_back(pair<int, int>(6, 3));
-  S.push_back(pair<int, int>(7, 3));
-  S.push_back(pair<int, int>(9, 14));
+  S[0] = 0;
+  S[1] = 1;
+  S[2] = 0;
+  S[3] = 3;
+  S[4] = 2;
+  S[5] = 2;
+  S[6] = 3;
+  S[7] = 3;
+  S[8] = 1;
+  S[9] = 14;
 
   // Act & Assert
   ASSERT_EQ(Dijkstra(graph, &A, &vec), S);
+}
+
+TEST(correctness, eq_res_on_large_random_graph) {
+  // Arrange
+  vector < vector<pair<int, int>>> g = generateGraph(100, 500);
+  FibHeap A;
+  BinHeap B;
+  vector<FibElem> vecA(g.size());
+  vector<BinElem> vecB(g.size());
+
+  FibElem a(0, 0);
+  vecA[0] = a;
+  A.insert(&vecA[0]);
+  for (size_t i = 1; i < g.size(); i++) {
+    FibElem c(i, INT_MAX);
+    vecA[i] = c;
+    A.insert(&vecA[i]);
+  }
+
+  BinElem b(0, 0);
+  vecB[0] = b;
+  B.insert(&vecB[0]);
+  for (size_t i = 1; i < g.size(); i++) {
+    BinElem c(i, INT_MAX);
+    vecB[i] = c;
+    B.insert(&vecB[i]);
+  }
+
+  // Act & Assert
+  ASSERT_EQ(Dijkstra(g, &B, &vecB), Dijkstra(g, &A, &vecA));
 }

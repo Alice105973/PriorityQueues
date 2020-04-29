@@ -24,7 +24,7 @@ public:
   pair<int, int> operator[](int i) { return data[i]; }
   DHeap(int _d = 3) : d(_d) {} // конструктор
   void insert(int num, int weight);  // вставка вершины с заданным номером и весом
-  friend vector<pair<int, int>> Dijkstra(const vector < vector<pair<int, int>>>& graph, DHeap q);
+  friend vector<int> Dijkstra(const vector < vector<pair<int, int>>>& graph, DHeap q);
 };
 
 #endif  // PRIORITY_QUEUES_INCLUDE_DHEAP_H_

@@ -5,12 +5,12 @@
 
 using namespace std;
 
-vector<pair<int, int>> Dijkstra(const vector < vector<pair<int, int>>>& graph, FibHeap* q, vector<FibElem>* data) {
-  vector<pair<int, int>> S;  // список вершин, для которых dist уже просчитана
+vector<int> Dijkstra(const vector < vector<pair<int, int>>>& graph, FibHeap* q, vector<FibElem>* data) {
+  vector<int> S(graph.size());  // список вершин, для которых dist уже просчитана
   FibElem* u = NULL;  // вершина, для которой проводится релаксация
   while (q->getN()) {
     pair<int, int> v = q->extractMin();  // текущая вершина, (номер, вес)
-    S.push_back(v);  // занести в список обработанных
+    S[v.first] = v.second;  // занести в список обработанных
     int amount = graph[v.first].size();  // количество смежных вершин
     for (int i = 0; i < amount; i++) {  // для всех смежных вершин
       int unum = graph[v.first][i].first;  // номер i-той смежной с v вершины

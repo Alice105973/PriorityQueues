@@ -88,11 +88,11 @@ void DHeap::relax(int vweight, int unum, int uvweight) {
   }
 }
 
-vector<pair<int, int>> Dijkstra(const vector < vector<pair<int, int>>>& graph, DHeap q) {
-  vector<pair<int, int>> S;  // список вершин, для которых dist уже просчитана
+vector<int> Dijkstra(const vector < vector<pair<int, int>>>& graph, DHeap q) {
+  vector<int> S(graph.size());  // список вершин, для которых dist уже просчитана
   while (q.n) {
     pair<int, int> v = q.extractMin();  // текущая вершина
-    S.push_back(v);  // занести в список обработанных
+    S[v.first] = v.second;  // занести в список обработанных
     int amount = graph[v.first].size();  // количество смежных вершин
     for (int i = 0; i < amount; i++) {  // для всех смежных вершин
       q.relax(v.second, graph[v.first][i].first, graph[v.first][i].second);  // пересчитать веса

@@ -48,7 +48,7 @@ public:
   int getN() { return n; }
   void insert(FibElem* x);  // вставка нового элемента
   pair<int, int> extractMin();  // извлечение минимума
-  friend vector<pair<int, int>> Dijkstra(const vector < vector<pair<int, int>>>& graph, FibHeap* q, vector<FibElem>* data);
+  friend vector<int> Dijkstra(const vector < vector<pair<int, int>>>& graph, FibHeap* q, vector<FibElem>* data);
 };
 
 #endif // RPIORITYQUEUES_INCLUDE_FIBHEAP_H

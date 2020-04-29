@@ -57,7 +57,7 @@ TEST(no_exceptions, can_insert_elem_to_FibHeap) {
 
 TEST(no_exceptions, can_use_Dijkstra_on_DHeap) {
   // Arrange
-  vector<vector<pair<int, int>>> g = generateGraph(10, 15);
+  vector<vector<pair<int, int>>> g = generateGraph(1000, 20000);
 
   // Act & Assert
   ASSERT_NO_THROW(D_Dijkstra(g));
@@ -65,15 +65,15 @@ TEST(no_exceptions, can_use_Dijkstra_on_DHeap) {
 
 TEST(no_exceptions, can_use_Dijkstra_on_BinHeap) {
   // Arrange
-  vector<vector<pair<int, int>>> g = generateGraph(10, 15);
+  vector<vector<pair<int, int>>> g = generateGraph(1000, 20000);
 
   // Act & Assert
   ASSERT_NO_THROW(Bin_Dijkstra(g));
 }
 
-TEST(no_exceptions, can_use_Dijkstra_on_FibHeap) {
+TEST(no_exceptions, DISABLED_can_use_Dijkstra_on_FibHeap) {
   // Arrange
-  vector<vector<pair<int, int>>> g = generateGraph(10, 15);
+  vector<vector<pair<int, int>>> g = generateGraph(1000, 20000);
 
   // Act & Assert
   ASSERT_NO_THROW(Fib_Dijkstra(g));
@@ -347,9 +347,25 @@ TEST(correctness, correct_FibHeap_Dijkstra) {
   ASSERT_EQ(Fib_Dijkstra(graph), S);
 }
 
-TEST(correctness, DISABLED_eq_res_on_large_random_graph) {
+TEST(correctness, eq_res_on_large_graph_DHeap) {
   // Arrange
-  vector < vector<pair<int, int>>> g = generateGraph(100, 500);
+  vector < vector<pair<int, int>>> g = generateGraph(1000, 20000);
+
+  // Act & Assert
+  ASSERT_EQ(Dijkstra(g), D_Dijkstra(g));
+}
+
+TEST(correctness, eq_res_on_large_graph_BinHeap) {
+  // Arrange
+  vector < vector<pair<int, int>>> g = generateGraph(1000, 20000);
+
+  // Act & Assert
+  ASSERT_EQ(Dijkstra(g), Bin_Dijkstra(g));
+}
+
+TEST(correctness, DISABLED_eq_res_on_large_graph_FibHeap) {
+  // Arrange
+  vector < vector<pair<int, int>>> g = generateGraph(1000, 20000);
 
   // Act & Assert
   ASSERT_EQ(Dijkstra(g), Fib_Dijkstra(g));

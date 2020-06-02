@@ -27,4 +27,6 @@ public:
   friend vector<int> D_Dijkstra(const vector < vector<pair<int, int>>>& graph);
 };
 
+vector<int> D_Dijkstra(const vector < vector<pair<int, int>>>& graph);
+
 #endif  // PRIORITY_QUEUES_INCLUDE_DHEAP_H_

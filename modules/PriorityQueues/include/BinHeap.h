@@ -34,4 +34,6 @@ public:
   friend vector<int> Bin_Dijkstra(const vector < vector<pair<int, int>>>& graph);
 };
 
+vector<int> Bin_Dijkstra(const vector < vector<pair<int, int>>>& graph);
+
 #endif  // PRIORITYQUEUES_INCLUDE_BINHEAP_H_

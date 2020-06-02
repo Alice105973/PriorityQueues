@@ -31,24 +31,24 @@ struct FibElem {
     parent = NULL;
     child = NULL;
   }
-  void link(FibElem* x);  // объединение деревьев одной степени
 };
 
 class FibHeap {
-  int n = 0;  // общее число всех вершин
+  int n = 0;  // количество элементов в куче
   FibElem* min = NULL;  // минимальный элемент
-  void relax(int v, FibElem* u, int uv);  // релаксация
-  void decreaseKey(FibElem* u, int newWeight);
-  void mergeRLists(FibHeap* A);  // объединение корневых списков
+  void link(FibElem* x, FibElem* y);  // объединение деревьев одной степени
+  void consolidate();  // уплотнение
+  void decreaseKey(FibElem* u, int newWeight);  // уменьшение ключа
   void cut(FibElem* x, FibElem* y);  // отрезать x от y
   void cascadingCut(FibElem* y);
-  void unite(FibHeap* A);  // объединение двух куч
-  void consolidate();  // уплотнение
+  void relax(int v, FibElem* u, int uv);  // релаксация
 public:
-  int getN() { return n; }
+  bool isEmpty() { return (n == 0); }
   void insert(FibElem* x);  // вставка нового элемента
   pair<int, int> extractMin();  // извлечение минимума
   friend vector<int> Fib_Dijkstra(const vector < vector<pair<int, int>>>& graph);
 };
+
+vector<int> Fib_Dijkstra(const vector < vector<pair<int, int>>>& graph);
 
 #endif // RPIORITYQUEUES_INCLUDE_FIBHEAP_H

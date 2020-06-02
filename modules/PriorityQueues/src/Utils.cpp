@@ -6,7 +6,7 @@ using namespace std;
 
 vector<vector<pair<int, int>>> generateGraph(const int& v, const int& e) {
   if (v > e + 1) throw "несвязный граф";
-  if (e > v * (v - 1) * 2) throw "больше ребер, чем в полном графе";
+  if (e > v * (v - 1) / 2) throw "больше ребер, чем в полном графе";
   vector<vector<pair<int, int>>> graph(v);  // списки смежности
   vector<bool> A(v);  // вектор меток вершин (0 - не использована)
   mt19937 gen(clock());  // генератор случайных чисел

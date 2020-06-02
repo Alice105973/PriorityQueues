@@ -2,16 +2,21 @@
 
 using namespace std;
 
+vector<BinElem*> ptrs;  // указатель на i-тую вершину в очереди
+
 vector<int> Bin_Dijkstra(const vector < vector<pair<int, int>>>& graph) {
+  ptrs.clear();
   BinHeap q;
   vector<BinElem> data(graph.size());
   BinElem a(0, 0);
   data[0] = a;
   q.insert(&data[0]);
+  ptrs.push_back(&data[0]);
   for (size_t i = 1; i < graph.size(); i++) {
     BinElem c(i, INT_MAX);
     data[i] = c;
     q.insert(&data[i]);
+    ptrs.push_back(&data[i]);
   }  // дополнительная память для кучи
   vector<int> S(graph.size());  // список вершин, для которых dist уже просчитана
   BinElem* u = NULL;  // вершина, для которой проводится релаксация
@@ -21,13 +26,7 @@ vector<int> Bin_Dijkstra(const vector < vector<pair<int, int>>>& graph) {
     int amount = graph[v.first].size();  // количество смежных вершин
     for (int i = 0; i < amount; i++) {  // для всех смежных вершин
       int unum = graph[v.first][i].first;  // номер i-той смежной с v вершины
-      u = &data[0];  // начинаем поиск с первой вершины
-      int j = 0;
-      while (u->num != unum) {  // пока не найдена вершина с нужным номером
-        j++;
-        u = &data[j];  // перейти к следующей вершине
-      }
-      u->relax(v.second, graph[v.first][i].second);
+      ptrs[unum]->relax(v.second, graph[v.first][i].second);
     }
   }
   return S;
@@ -51,6 +50,9 @@ void BinElem::decreaseKey(int newWeight) {
     tmp = y->num;
     y->num = z->num;
     z->num = tmp;  // обмен информацией
+    BinElem* temp = ptrs[z->num];
+    ptrs[z->num] = ptrs[y->num];
+    ptrs[y->num] = temp;  // обмен указателями
     y = z;
     z = y->parent;  // следующий шаг
   }

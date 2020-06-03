@@ -1,13 +1,15 @@
+// Copyright 2020 Kukushkina Ksenia
+
+#include <gtest/gtest.h>
 #include <random>
 #include <ctime>
 #include <iostream>
-#include <gtest/gtest.h>
+#include <utility>
+#include <vector>
 #include "../include/Utils.h"
 #include "../include/DHeap.h"
 #include "../include/BinHeap.h"
 #include "../include/FibHeap.h"
-
-using namespace std;
 
 TEST(no_exceptions, can_generate_graph) {
   // Arrange & Act & Assert
@@ -68,7 +70,8 @@ TEST(no_exceptions, can_insert_elem_to_FibHeap) {
 
 TEST(no_exceptions, can_use_Dijkstra_on_DHeap) {
   // Arrange
-  vector<vector<pair<int, int>>> g = generateGraph(1000, 20000);
+  std::vector<std::vector<std::pair<int, int>>> g
+    = generateGraph(1000, 20000);
 
   // Act & Assert
   ASSERT_NO_THROW(D_Dijkstra(g));
@@ -76,7 +79,8 @@ TEST(no_exceptions, can_use_Dijkstra_on_DHeap) {
 
 TEST(no_exceptions, can_use_Dijkstra_on_BinHeap) {
   // Arrange
-  vector<vector<pair<int, int>>> g = generateGraph(1000, 20000);
+  std::vector<std::vector<std::pair<int, int>>> g
+    = generateGraph(1000, 20000);
 
   // Act & Assert
   ASSERT_NO_THROW(Bin_Dijkstra(g));
@@ -84,7 +88,8 @@ TEST(no_exceptions, can_use_Dijkstra_on_BinHeap) {
 
 TEST(no_exceptions, can_use_Dijkstra_on_FibHeap) {
   // Arrange
-  vector<vector<pair<int, int>>> g = generateGraph(1000, 20000);
+  std::vector<std::vector<std::pair<int, int>>> g
+    = generateGraph(1000, 20000);
 
   // Act & Assert
   ASSERT_NO_THROW(Fib_Dijkstra(g));
@@ -99,7 +104,7 @@ TEST(correctness, correct_DHeap_build) {
   }
 
   // Act
-  for (size_t i = 1; i < 30; i++) {
+  for (std::size_t i = 1; i < 30; i++) {
     if (H[i].second < H[H.parent(i)].second) {
       corr = false;
       break;
@@ -113,7 +118,7 @@ TEST(correctness, correct_DHeap_build) {
 TEST(correctness, correct_BinHeap_build) {
   // Arrange
   BinHeap A;
-  vector<BinElem> vec(10);
+  std::vector<BinElem> vec(10);
 
   // Act
   for (int i = 0; i < 10; i++) {
@@ -128,22 +133,21 @@ TEST(correctness, correct_BinHeap_build) {
 TEST(correctness, correct_minimum_extraction_BinHeap) {
   // Arrange
   BinHeap A;
-  vector<BinElem> vec(10);
-  vector<pair<int, int>> S;
+  std::vector<BinElem> vec(10);
+  std::vector<std::pair<int, int>> S;
 
   // Act
   for (int i = 0; i < 10; i++) {
     vec[i] = BinElem(i, rand() % 10);
     A.insert(&vec[i]);
   }
-  for (int i = 0; i < 10; i++)
-  {
+  for (int i = 0; i < 10; i++) {
     S.push_back(A.extractMin());
   }
 
   // Assert
   bool corr = 1;
-  for (size_t i = 0; i < S.size() - 1; i++)
+  for (std::size_t i = 0; i < S.size() - 1; i++)
     if (S[i].second > S[i + 1].second)
       corr = 0;
   ASSERT_EQ(corr, true);
@@ -152,22 +156,21 @@ TEST(correctness, correct_minimum_extraction_BinHeap) {
 TEST(correctness, correct_minimum_extraction_FibHeap) {
   // Arrange
   FibHeap A;
-  size_t n = 10;
-  vector<FibElem> vec(n);
-  vector<pair<int, int>> S;
-  for (size_t i = 0; i < n; i++) {
+  std::size_t n = 10;
+  std::vector<FibElem> vec(n);
+  std::vector<std::pair<int, int>> S;
+  for (std::size_t i = 0; i < n; i++) {
     vec[i] = FibElem(i, rand() % 10);
     A.insert(&vec[i]);
   }
   // Act
-  for (size_t i = 0; i < n; i++)
-  {
+  for (std::size_t i = 0; i < n; i++) {
     S.push_back(A.extractMin());
   }
 
   // Assert
   bool corr = 1;
-  for (size_t i = 0; i < S.size() - 1; i++)
+  for (std::size_t i = 0; i < S.size() - 1; i++)
     if (S[i].second > S[i + 1].second)
       corr = 0;
   ASSERT_EQ(corr, true);
@@ -175,34 +178,34 @@ TEST(correctness, correct_minimum_extraction_FibHeap) {
 
 TEST(correctness, correct_label_Dijkstra) {
   // Arrange
-  vector<vector<pair<int, int>>> graph(10);
-  vector<int> S(10);
-  graph[0].push_back(pair<int, int>(1, 1));
-  graph[0].push_back(pair<int, int>(2, 0));
-  graph[0].push_back(pair<int, int>(6, 5));
-  graph[0].push_back(pair<int, int>(8, 9));
-  graph[1].push_back(pair<int, int>(9, 13));
-  graph[1].push_back(pair<int, int>(0, 1));
-  graph[1].push_back(pair<int, int>(5, 1));
-  graph[2].push_back(pair<int, int>(0, 0));
-  graph[2].push_back(pair<int, int>(8, 1));
-  graph[2].push_back(pair<int, int>(4, 4));
-  graph[2].push_back(pair<int, int>(3, 3));
-  graph[3].push_back(pair<int, int>(2, 3));
-  graph[3].push_back(pair<int, int>(7, 3));
-  graph[4].push_back(pair<int, int>(7, 1));
-  graph[4].push_back(pair<int, int>(2, 4));
-  graph[4].push_back(pair<int, int>(8, 1));
-  graph[5].push_back(pair<int, int>(6, 1));
-  graph[5].push_back(pair<int, int>(1, 1));
-  graph[6].push_back(pair<int, int>(5, 1));
-  graph[6].push_back(pair<int, int>(0, 5));
-  graph[7].push_back(pair<int, int>(4, 1));
-  graph[7].push_back(pair<int, int>(3, 3));
-  graph[8].push_back(pair<int, int>(0, 9));
-  graph[8].push_back(pair<int, int>(2, 1));
-  graph[8].push_back(pair<int, int>(4, 1));
-  graph[9].push_back(pair<int, int>(1, 13));
+  std::vector<std::vector<std::pair<int, int>>> graph(10);
+  std::vector<int> S(10);
+  graph[0].push_back(std::pair<int, int>(1, 1));
+  graph[0].push_back(std::pair<int, int>(2, 0));
+  graph[0].push_back(std::pair<int, int>(6, 5));
+  graph[0].push_back(std::pair<int, int>(8, 9));
+  graph[1].push_back(std::pair<int, int>(9, 13));
+  graph[1].push_back(std::pair<int, int>(0, 1));
+  graph[1].push_back(std::pair<int, int>(5, 1));
+  graph[2].push_back(std::pair<int, int>(0, 0));
+  graph[2].push_back(std::pair<int, int>(8, 1));
+  graph[2].push_back(std::pair<int, int>(4, 4));
+  graph[2].push_back(std::pair<int, int>(3, 3));
+  graph[3].push_back(std::pair<int, int>(2, 3));
+  graph[3].push_back(std::pair<int, int>(7, 3));
+  graph[4].push_back(std::pair<int, int>(7, 1));
+  graph[4].push_back(std::pair<int, int>(2, 4));
+  graph[4].push_back(std::pair<int, int>(8, 1));
+  graph[5].push_back(std::pair<int, int>(6, 1));
+  graph[5].push_back(std::pair<int, int>(1, 1));
+  graph[6].push_back(std::pair<int, int>(5, 1));
+  graph[6].push_back(std::pair<int, int>(0, 5));
+  graph[7].push_back(std::pair<int, int>(4, 1));
+  graph[7].push_back(std::pair<int, int>(3, 3));
+  graph[8].push_back(std::pair<int, int>(0, 9));
+  graph[8].push_back(std::pair<int, int>(2, 1));
+  graph[8].push_back(std::pair<int, int>(4, 1));
+  graph[9].push_back(std::pair<int, int>(1, 13));
 
   S[0] = 0;
   S[1] = 1;
@@ -221,35 +224,35 @@ TEST(correctness, correct_label_Dijkstra) {
 
 TEST(correctness, correct_DHeap_Dijkstra) {
   // Arrange
-  vector<vector<pair<int, int>>> graph(10);
+  std::vector<std::vector<std::pair<int, int>>> graph(10);
   DHeap A;
-  vector<int> S(10);
-  graph[0].push_back(pair<int, int>(1, 1));
-  graph[0].push_back(pair<int, int>(2, 0));
-  graph[0].push_back(pair<int, int>(6, 5));
-  graph[0].push_back(pair<int, int>(8, 9));
-  graph[1].push_back(pair<int, int>(9, 13));
-  graph[1].push_back(pair<int, int>(0, 1));
-  graph[1].push_back(pair<int, int>(5, 1));
-  graph[2].push_back(pair<int, int>(0, 0));
-  graph[2].push_back(pair<int, int>(8, 1));
-  graph[2].push_back(pair<int, int>(4, 4));
-  graph[2].push_back(pair<int, int>(3, 3));
-  graph[3].push_back(pair<int, int>(2, 3));
-  graph[3].push_back(pair<int, int>(7, 3));
-  graph[4].push_back(pair<int, int>(7, 1));
-  graph[4].push_back(pair<int, int>(2, 4));
-  graph[4].push_back(pair<int, int>(8, 1));
-  graph[5].push_back(pair<int, int>(6, 1));
-  graph[5].push_back(pair<int, int>(1, 1));
-  graph[6].push_back(pair<int, int>(5, 1));
-  graph[6].push_back(pair<int, int>(0, 5));
-  graph[7].push_back(pair<int, int>(4, 1));
-  graph[7].push_back(pair<int, int>(3, 3));
-  graph[8].push_back(pair<int, int>(0, 9));
-  graph[8].push_back(pair<int, int>(2, 1));
-  graph[8].push_back(pair<int, int>(4, 1));
-  graph[9].push_back(pair<int, int>(1, 13));
+  std::vector<int> S(10);
+  graph[0].push_back(std::pair<int, int>(1, 1));
+  graph[0].push_back(std::pair<int, int>(2, 0));
+  graph[0].push_back(std::pair<int, int>(6, 5));
+  graph[0].push_back(std::pair<int, int>(8, 9));
+  graph[1].push_back(std::pair<int, int>(9, 13));
+  graph[1].push_back(std::pair<int, int>(0, 1));
+  graph[1].push_back(std::pair<int, int>(5, 1));
+  graph[2].push_back(std::pair<int, int>(0, 0));
+  graph[2].push_back(std::pair<int, int>(8, 1));
+  graph[2].push_back(std::pair<int, int>(4, 4));
+  graph[2].push_back(std::pair<int, int>(3, 3));
+  graph[3].push_back(std::pair<int, int>(2, 3));
+  graph[3].push_back(std::pair<int, int>(7, 3));
+  graph[4].push_back(std::pair<int, int>(7, 1));
+  graph[4].push_back(std::pair<int, int>(2, 4));
+  graph[4].push_back(std::pair<int, int>(8, 1));
+  graph[5].push_back(std::pair<int, int>(6, 1));
+  graph[5].push_back(std::pair<int, int>(1, 1));
+  graph[6].push_back(std::pair<int, int>(5, 1));
+  graph[6].push_back(std::pair<int, int>(0, 5));
+  graph[7].push_back(std::pair<int, int>(4, 1));
+  graph[7].push_back(std::pair<int, int>(3, 3));
+  graph[8].push_back(std::pair<int, int>(0, 9));
+  graph[8].push_back(std::pair<int, int>(2, 1));
+  graph[8].push_back(std::pair<int, int>(4, 1));
+  graph[9].push_back(std::pair<int, int>(1, 13));
 
   S[0] = 0;
   S[1] = 1;
@@ -268,34 +271,34 @@ TEST(correctness, correct_DHeap_Dijkstra) {
 
 TEST(correctness, correct_BinHeap_Dijkstra) {
   // Arrange
-  vector<vector<pair<int, int>>> graph(10);
-  vector<int> S(10);
-  graph[0].push_back(pair<int, int>(1, 1));
-  graph[0].push_back(pair<int, int>(2, 0));
-  graph[0].push_back(pair<int, int>(6, 5));
-  graph[0].push_back(pair<int, int>(8, 9));
-  graph[1].push_back(pair<int, int>(9, 13));
-  graph[1].push_back(pair<int, int>(0, 1));
-  graph[1].push_back(pair<int, int>(5, 1));
-  graph[2].push_back(pair<int, int>(0, 0));
-  graph[2].push_back(pair<int, int>(8, 1));
-  graph[2].push_back(pair<int, int>(4, 4));
-  graph[2].push_back(pair<int, int>(3, 3));
-  graph[3].push_back(pair<int, int>(2, 3));
-  graph[3].push_back(pair<int, int>(7, 3));
-  graph[4].push_back(pair<int, int>(7, 1));
-  graph[4].push_back(pair<int, int>(2, 4));
-  graph[4].push_back(pair<int, int>(8, 1));
-  graph[5].push_back(pair<int, int>(6, 1));
-  graph[5].push_back(pair<int, int>(1, 1));
-  graph[6].push_back(pair<int, int>(5, 1));
-  graph[6].push_back(pair<int, int>(0, 5));
-  graph[7].push_back(pair<int, int>(4, 1));
-  graph[7].push_back(pair<int, int>(3, 3));
-  graph[8].push_back(pair<int, int>(0, 9));
-  graph[8].push_back(pair<int, int>(2, 1));
-  graph[8].push_back(pair<int, int>(4, 1));
-  graph[9].push_back(pair<int, int>(1, 13));
+  std::vector<std::vector<std::pair<int, int>>> graph(10);
+  std::vector<int> S(10);
+  graph[0].push_back(std::pair<int, int>(1, 1));
+  graph[0].push_back(std::pair<int, int>(2, 0));
+  graph[0].push_back(std::pair<int, int>(6, 5));
+  graph[0].push_back(std::pair<int, int>(8, 9));
+  graph[1].push_back(std::pair<int, int>(9, 13));
+  graph[1].push_back(std::pair<int, int>(0, 1));
+  graph[1].push_back(std::pair<int, int>(5, 1));
+  graph[2].push_back(std::pair<int, int>(0, 0));
+  graph[2].push_back(std::pair<int, int>(8, 1));
+  graph[2].push_back(std::pair<int, int>(4, 4));
+  graph[2].push_back(std::pair<int, int>(3, 3));
+  graph[3].push_back(std::pair<int, int>(2, 3));
+  graph[3].push_back(std::pair<int, int>(7, 3));
+  graph[4].push_back(std::pair<int, int>(7, 1));
+  graph[4].push_back(std::pair<int, int>(2, 4));
+  graph[4].push_back(std::pair<int, int>(8, 1));
+  graph[5].push_back(std::pair<int, int>(6, 1));
+  graph[5].push_back(std::pair<int, int>(1, 1));
+  graph[6].push_back(std::pair<int, int>(5, 1));
+  graph[6].push_back(std::pair<int, int>(0, 5));
+  graph[7].push_back(std::pair<int, int>(4, 1));
+  graph[7].push_back(std::pair<int, int>(3, 3));
+  graph[8].push_back(std::pair<int, int>(0, 9));
+  graph[8].push_back(std::pair<int, int>(2, 1));
+  graph[8].push_back(std::pair<int, int>(4, 1));
+  graph[9].push_back(std::pair<int, int>(1, 13));
 
   S[0] = 0;
   S[1] = 1;
@@ -314,34 +317,34 @@ TEST(correctness, correct_BinHeap_Dijkstra) {
 
 TEST(correctness, correct_FibHeap_Dijkstra) {
   // Arrange
-  vector<vector<pair<int, int>>> graph(10);
-  vector<int> S(10);
-  graph[0].push_back(pair<int, int>(1, 1));
-  graph[0].push_back(pair<int, int>(2, 0));
-  graph[0].push_back(pair<int, int>(6, 5));
-  graph[0].push_back(pair<int, int>(8, 9));
-  graph[1].push_back(pair<int, int>(9, 13));
-  graph[1].push_back(pair<int, int>(0, 1));
-  graph[1].push_back(pair<int, int>(5, 1));
-  graph[2].push_back(pair<int, int>(0, 0));
-  graph[2].push_back(pair<int, int>(8, 1));
-  graph[2].push_back(pair<int, int>(4, 4));
-  graph[2].push_back(pair<int, int>(3, 3));
-  graph[3].push_back(pair<int, int>(2, 3));
-  graph[3].push_back(pair<int, int>(7, 3));
-  graph[4].push_back(pair<int, int>(7, 1));
-  graph[4].push_back(pair<int, int>(2, 4));
-  graph[4].push_back(pair<int, int>(8, 1));
-  graph[5].push_back(pair<int, int>(6, 1));
-  graph[5].push_back(pair<int, int>(1, 1));
-  graph[6].push_back(pair<int, int>(5, 1));
-  graph[6].push_back(pair<int, int>(0, 5));
-  graph[7].push_back(pair<int, int>(4, 1));
-  graph[7].push_back(pair<int, int>(3, 3));
-  graph[8].push_back(pair<int, int>(0, 9));
-  graph[8].push_back(pair<int, int>(2, 1));
-  graph[8].push_back(pair<int, int>(4, 1));
-  graph[9].push_back(pair<int, int>(1, 13));
+  std::vector<std::vector<std::pair<int, int>>> graph(10);
+  std::vector<int> S(10);
+  graph[0].push_back(std::pair<int, int>(1, 1));
+  graph[0].push_back(std::pair<int, int>(2, 0));
+  graph[0].push_back(std::pair<int, int>(6, 5));
+  graph[0].push_back(std::pair<int, int>(8, 9));
+  graph[1].push_back(std::pair<int, int>(9, 13));
+  graph[1].push_back(std::pair<int, int>(0, 1));
+  graph[1].push_back(std::pair<int, int>(5, 1));
+  graph[2].push_back(std::pair<int, int>(0, 0));
+  graph[2].push_back(std::pair<int, int>(8, 1));
+  graph[2].push_back(std::pair<int, int>(4, 4));
+  graph[2].push_back(std::pair<int, int>(3, 3));
+  graph[3].push_back(std::pair<int, int>(2, 3));
+  graph[3].push_back(std::pair<int, int>(7, 3));
+  graph[4].push_back(std::pair<int, int>(7, 1));
+  graph[4].push_back(std::pair<int, int>(2, 4));
+  graph[4].push_back(std::pair<int, int>(8, 1));
+  graph[5].push_back(std::pair<int, int>(6, 1));
+  graph[5].push_back(std::pair<int, int>(1, 1));
+  graph[6].push_back(std::pair<int, int>(5, 1));
+  graph[6].push_back(std::pair<int, int>(0, 5));
+  graph[7].push_back(std::pair<int, int>(4, 1));
+  graph[7].push_back(std::pair<int, int>(3, 3));
+  graph[8].push_back(std::pair<int, int>(0, 9));
+  graph[8].push_back(std::pair<int, int>(2, 1));
+  graph[8].push_back(std::pair<int, int>(4, 1));
+  graph[9].push_back(std::pair<int, int>(1, 13));
 
   S[0] = 0;
   S[1] = 1;
@@ -360,7 +363,8 @@ TEST(correctness, correct_FibHeap_Dijkstra) {
 
 TEST(correctness, eq_res_on_large_graph_DHeap) {
   // Arrange
-  vector < vector<pair<int, int>>> g = generateGraph(1000, 20000);
+  std::vector<std::vector<std::pair<int, int>>> g
+    = generateGraph(1000, 20000);
 
   // Act & Assert
   ASSERT_EQ(Dijkstra(g), D_Dijkstra(g));
@@ -368,7 +372,8 @@ TEST(correctness, eq_res_on_large_graph_DHeap) {
 
 TEST(correctness, eq_res_on_large_graph_BinHeap) {
   // Arrange
-  vector < vector<pair<int, int>>> g = generateGraph(1000, 20000);
+  std::vector<std::vector<std::pair<int, int>>> g
+    = generateGraph(1000, 20000);
 
   // Act & Assert
   ASSERT_EQ(Dijkstra(g), Bin_Dijkstra(g));
@@ -376,7 +381,8 @@ TEST(correctness, eq_res_on_large_graph_BinHeap) {
 
 TEST(correctness, eq_res_on_large_graph_FibHeap) {
   // Arrange
-  vector < vector<pair<int, int>>> g = generateGraph(1000, 20000);
+  std::vector<std::vector<std::pair<int, int>>> g
+    = generateGraph(1000, 20000);
 
   // Act & Assert
   ASSERT_EQ(Dijkstra(g), Fib_Dijkstra(g));

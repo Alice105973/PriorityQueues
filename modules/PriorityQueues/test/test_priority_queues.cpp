@@ -29,6 +29,17 @@ TEST(no_exceptions, can_create_FibHeap) {
   ASSERT_NO_THROW(FibHeap H);
 }
 
+TEST(no_exceptions, can_insert_elem_to_DHeap) {
+  // Arrange
+  DHeap A;
+
+  // Act
+  A.insert(2, 5);
+
+  // Assert
+  ASSERT_NO_THROW(A.insert(7, 10));
+}
+
 TEST(no_exceptions, can_insert_elem_to_BinHeap) {
   // Arrange
   BinElem b(1, 1);
@@ -71,7 +82,7 @@ TEST(no_exceptions, can_use_Dijkstra_on_BinHeap) {
   ASSERT_NO_THROW(Bin_Dijkstra(g));
 }
 
-TEST(no_exceptions, DISABLED_can_use_Dijkstra_on_FibHeap) {
+TEST(no_exceptions, can_use_Dijkstra_on_FibHeap) {
   // Arrange
   vector<vector<pair<int, int>>> g = generateGraph(1000, 20000);
 
@@ -88,7 +99,7 @@ TEST(correctness, correct_DHeap_build) {
   }
 
   // Act
-  for (int i = 1; i < 30; i++) {
+  for (size_t i = 1; i < 30; i++) {
     if (H[i].second < H[H.parent(i)].second) {
       corr = false;
       break;
@@ -132,7 +143,7 @@ TEST(correctness, correct_minimum_extraction_BinHeap) {
 
   // Assert
   bool corr = 1;
-  for (int i = 0; i < S.size() - 1; i++)
+  for (size_t i = 0; i < S.size() - 1; i++)
     if (S[i].second > S[i + 1].second)
       corr = 0;
   ASSERT_EQ(corr, true);
@@ -149,14 +160,14 @@ TEST(correctness, correct_minimum_extraction_FibHeap) {
     A.insert(&vec[i]);
   }
   // Act
-  for (int i = 0; i < n; i++)
+  for (size_t i = 0; i < n; i++)
   {
     S.push_back(A.extractMin());
   }
 
   // Assert
   bool corr = 1;
-  for (int i = 0; i < S.size() - 1; i++)
+  for (size_t i = 0; i < S.size() - 1; i++)
     if (S[i].second > S[i + 1].second)
       corr = 0;
   ASSERT_EQ(corr, true);
@@ -363,7 +374,7 @@ TEST(correctness, eq_res_on_large_graph_BinHeap) {
   ASSERT_EQ(Dijkstra(g), Bin_Dijkstra(g));
 }
 
-TEST(correctness, DISABLED_eq_res_on_large_graph_FibHeap) {
+TEST(correctness, eq_res_on_large_graph_FibHeap) {
   // Arrange
   vector < vector<pair<int, int>>> g = generateGraph(1000, 20000);
 

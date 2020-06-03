@@ -152,7 +152,7 @@ TEST(correctness, correct_minimum_extraction_BinHeap) {
 TEST(correctness, correct_minimum_extraction_FibHeap) {
   // Arrange
   FibHeap A;
-  int n = 10;
+  size_t n = 10;
   vector<FibElem> vec(n);
   vector<pair<int, int>> S;
   for (int i = 0; i < n; i++) {

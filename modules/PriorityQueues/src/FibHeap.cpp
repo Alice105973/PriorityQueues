@@ -1,7 +1,5 @@
 #include <vector>
 #include <cmath>
-#include <iostream>
-#include <windows.h>
 #include "../include/FibHeap.h"
 
 using namespace std;
@@ -105,7 +103,7 @@ void FibHeap::link(FibElem* x, FibElem* y) {
 void FibHeap::consolidate() {
   if (min == NULL)
     return;
-  vector<FibElem*> A(ceil(log2(n)), NULL);  // вспомогательный массив
+  vector<FibElem*> A(static_cast<size_t>(ceil(log2(n))), NULL);  // вспомогательный массив
   // в ячейке с номером i находится указатель на корень степени i
   int d;  // степень текущей вершины
   FibElem* x = min;  // текущая вершина
@@ -122,7 +120,7 @@ void FibHeap::consolidate() {
   }
   min->left = min;
   min->right = min;  // заполнить вспомогательный массив, разорвав все связи
-  for (int i = 0; i < rList.size(); i++) {  // для каждой вершины корневого списка
+  for (size_t i = 0; i < rList.size(); i++) {  // для каждой вершины корневого списка
     x = rList[i];  // обновить значение вершины
     d = x->degree;  // значение степени
     while (A[d] != NULL) {  // пока есть одинаковые деревья
@@ -136,7 +134,7 @@ void FibHeap::consolidate() {
     A[d] = x;  // записать полученное дерево
   }
   min = NULL;  // очистить кучу
-  for (int i = 0; i < A.size(); i++) {
+  for (size_t i = 0; i < A.size(); i++) {
     if (A[i] == NULL)
       continue;
     if (min == NULL) {

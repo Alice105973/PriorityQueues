@@ -155,7 +155,7 @@ TEST(correctness, correct_minimum_extraction_FibHeap) {
   size_t n = 10;
   vector<FibElem> vec(n);
   vector<pair<int, int>> S;
-  for (int i = 0; i < n; i++) {
+  for (size_t i = 0; i < n; i++) {
     vec[i] = FibElem(i, rand() % 10);
     A.insert(&vec[i]);
   }

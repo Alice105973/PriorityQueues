@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <vector>
+#include <cstddef>
 #include "../include/DHeap.h"
 
 using namespace std;

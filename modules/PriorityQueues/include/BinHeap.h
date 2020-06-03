@@ -2,6 +2,7 @@
 #define PRIORITYQUEUES_INCLUDE_BINHEAP_H_
 
 #include <vector>
+#include <cstddef>
 
 using namespace std;
 

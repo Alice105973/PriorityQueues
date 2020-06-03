@@ -2,6 +2,7 @@
 #define RPIORITYQUEUES_INCLUDE_FIBHEAP_H
 
 #include <vector>
+#include <cstddef>
 
 using namespace std;
 

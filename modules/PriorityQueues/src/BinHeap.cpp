@@ -1,3 +1,5 @@
+#include <cstddef>
+#include <vector>
 #include "../include/BinHeap.h"
 
 using namespace std;

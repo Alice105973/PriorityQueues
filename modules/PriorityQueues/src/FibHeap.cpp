@@ -1,6 +1,7 @@
 #include <vector>
 #include <cmath>
 #include <cstddef>
+#include <climits>
 #include "../include/FibHeap.h"
 
 using namespace std;

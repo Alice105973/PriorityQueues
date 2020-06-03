@@ -1,4 +1,5 @@
 #include <cstddef>
+#include <climits>
 #include <vector>
 #include "../include/BinHeap.h"
 

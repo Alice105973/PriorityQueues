@@ -4,14 +4,14 @@
 
 using namespace std;
 
-vector<vector<pair<int, int>>> generateGraph(const int& v, const int& e) {
+vector<vector<pair<int, int>>> generateGraph(const size_t& v, const size_t& e) {
   if (v > e + 1) throw "несвязный граф";
   if (e > v * (v - 1) / 2) throw "больше ребер, чем в полном графе";
   vector<vector<pair<int, int>>> graph(v);  // списки смежности
   vector<bool> A(v);  // вектор меток вершин (0 - не использована)
   mt19937 gen(clock());  // генератор случайных чисел
-  int b, c;  // индексы связываемых вершин
-  int w;  // вес нового ребра
+  size_t b, c;  // индексы связываемых вершин
+  size_t w;  // вес нового ребра
   A[0] = true;  // начнем с 0 вершины
   for (size_t i = 0; i < v - 1; i++) {  // для каждой вершины из списка
     b = gen() % v;  // b - случайная вершина
@@ -32,14 +32,14 @@ vector<vector<pair<int, int>>> generateGraph(const int& v, const int& e) {
     graph[c].push_back(pair<int, int>(b, w));  // связать вершины ребром с заданным весом
   }
   // граф связный, добавить остальные ребра
-  for (int i = 0; i < e - v + 1; i++) {
+  for (size_t i = 0; i < e - v + 1; i++) {
     // сгенерировать две случайные несовпадающие вершины
     b = gen() % v;
     c = gen() % v;
     while (graph[b].size() == v - 1)
       b = gen() % v;
     // пока не найдена вершина c, не смежная с b, генерировать новую c
-    for (int j = 0; j < graph[b].size(); j++) {
+    for (int j = 0; j < static_cast<int>(graph[b].size()); j++) {
       if (graph[b][j].first == c || b == c || graph[c].size() == v - 1) {
         c = gen() % v;
         j = -1;
@@ -60,7 +60,7 @@ vector<int> Dijkstra(const vector<vector<pair<int, int>>>& g) {
   int argmin = 0;  // номер вершины с минимальной дистанцией
   while (n != 0) {  // пока есть непомеченные вершины
     int min = INT_MAX;  // минимальная длина пути из просчитанных
-    for (int i = 0; i < dist.size(); i++)
+    for (size_t i = 0; i < dist.size(); i++)
       // поиск непомеченной вершины с минимальным расстоянием
       if (dist[i] < min && label[i] == 0) {
         min = dist[i];
@@ -69,7 +69,7 @@ vector<int> Dijkstra(const vector<vector<pair<int, int>>>& g) {
     label[argmin] = true;
     n--;
     // релаксация
-    for (int j = 0; j < g[argmin].size(); j++) {
+    for (size_t j = 0; j < g[argmin].size(); j++) {
       if (dist[g[argmin][j].first] > dist[argmin] + g[argmin][j].second)
         dist[g[argmin][j].first] = dist[argmin] + g[argmin][j].second;
     }

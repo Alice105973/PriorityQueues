@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <vector>
+#include <climits>
 #include <cstddef>
 #include "../include/DHeap.h"
 

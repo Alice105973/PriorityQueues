@@ -11,6 +11,7 @@ protected:
   int n = 0;  // количество элементов
   vector<pair<int, int>> data;  // массив пар (u, dist[u]) в пор€дке возрастани€ dist[u]
   int d;  // количество детей у каждой вершины
+  vector<int> ptrs;  // index of i vertex in queue
   int minChild(int x);  // дочерн€€ вершина с минимальным ключом
   int leftChild(int x);  // лева€ дочерн€€ вершина
   int rightChild(int x);  // права€ дочерн€€ вершина

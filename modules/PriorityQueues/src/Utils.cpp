@@ -1,5 +1,6 @@
 #include <ctime>
 #include <random>
+#include <climits>
 #include "../include/Utils.h"
 
 using namespace std;
@@ -40,7 +41,7 @@ vector<vector<pair<int, int>>> generateGraph(const size_t& v, const size_t& e) {
       b = gen() % v;
     // пока не найдена вершина c, не смежная с b, генерировать новую c
     for (int j = 0; j < static_cast<int>(graph[b].size()); j++) {
-      if (graph[b][j].first == c || b == c || graph[c].size() == v - 1) {
+      if (graph[b][j].first == static_cast<int>(c) || b == c || graph[c].size() == v - 1) {
         c = gen() % v;
         j = -1;
       }

@@ -22,7 +22,6 @@ vector<int> Bin_Dijkstra(const vector < vector<pair<int, int>>>& graph) {
     ptrs.push_back(&data[i]);
   }  // дополнительная память для кучи
   vector<int> S(graph.size());  // список вершин, для которых dist уже просчитана
-  BinElem* u = NULL;  // вершина, для которой проводится релаксация
   while (q.getN()) {
     pair<int, int> v = q.extractMin();  // текущая вершина, (номер, вес)
     S[v.first] = v.second;  // занести в список обработанных

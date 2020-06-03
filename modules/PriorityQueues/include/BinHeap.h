@@ -6,8 +6,8 @@
 using namespace std;
 
 struct BinElem  {
-  int weight;  // вес вершины
   int num;  // номер вершины
+  int weight;  // вес вершины
   BinElem* parent;  // родитель вершины
   BinElem* child;  // левый ребенок
   BinElem* sibling;  // правый сосед

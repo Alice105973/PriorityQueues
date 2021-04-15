@@ -107,7 +107,6 @@ void FibHeap::consolidate() {
     return;
   vector<FibElem*> A(static_cast<size_t>(ceil(log2(n))), NULL);  // вспомогательный массив
   // в ячейке с номером i находится указатель на корень степени i
-  int d;  // степень текущей вершины
   FibElem* x = min;  // текущая вершина
   FibElem* y;  // вершина, сравниваемая с текущей
   vector<FibElem*> rList;  // вспомогательный массив для хранения
@@ -124,7 +123,7 @@ void FibHeap::consolidate() {
   min->right = min;  // заполнить вспомогательный массив, разорвав все связи
   for (size_t i = 0; i < rList.size(); i++) {  // для каждой вершины корневого списка
     x = rList[i];  // обновить значение вершины
-    d = x->degree;  // значение степени
+    int d = x->degree;  // значение степени
     while (A[d] != NULL) {  // пока есть одинаковые деревья
       y = A[d];  // дерево с той же степенью
       if (x->weight > y->weight)

@@ -10,6 +10,7 @@
 #include "../include/DHeap.h"
 #include "../include/BinHeap.h"
 #include "../include/FibHeap.h"
+#include "../include/ThinHeap.h"
 
 TEST(no_exceptions, can_generate_graph) {
   // Arrange & Act & Assert
@@ -29,6 +30,11 @@ TEST(no_exceptions, can_create_BinHeap) {
 TEST(no_exceptions, can_create_FibHeap) {
   // Arrange & Act & Assert
   ASSERT_NO_THROW(FibHeap H);
+}
+
+TEST(no_exceptions, can_create_ThinHeap) {
+  // Arrange & Act & Assert
+  ASSERT_NO_THROW(ThinHeap H);
 }
 
 TEST(no_exceptions, can_insert_elem_to_DHeap) {
@@ -60,6 +66,19 @@ TEST(no_exceptions, can_insert_elem_to_FibHeap) {
   FibElem a(1, 5);
   FibElem b(4, 2);
   FibHeap H;
+
+  // Act
+  H.insert(&a);
+
+  // Assert
+  ASSERT_NO_THROW(H.insert(&b));
+}
+
+TEST(no_exceptions, can_insert_elem_to_ThinHeap) {
+  // Arrange
+  ThinElem a(1, 5);
+  ThinElem b(4, 2);
+  ThinHeap H;
 
   // Act
   H.insert(&a);

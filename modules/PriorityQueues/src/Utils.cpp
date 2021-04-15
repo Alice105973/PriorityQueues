@@ -9,6 +9,16 @@ vector<vector<pair<int, int>>> generateGraph(const size_t& v, const size_t& e) {
   if (v > e + 1) throw "несвязный граф";
   if (e > v * (v - 1) / 2) throw "больше ребер, чем в полном графе";
   vector<vector<pair<int, int>>> graph(v);  // списки смежности
+  if (e == v * (v - 1) / 2) {
+    for (int i = 0; i < v; i++)  // full graph generation
+      for (int j = i + 1; j < v; j++) {
+        mt19937 gen(clock());  // random number generator
+        int w = gen() % 10 + 1;  // edge weight
+        graph[i].push_back(pair<int, int>(j, w));
+        graph[j].push_back(pair<int, int>(i, w));
+      }
+    return graph;
+  }
   vector<bool> A(v);  // вектор меток вершин (0 - не использована)
   mt19937 gen(clock());  // генератор случайных чисел
   size_t b, c;  // индексы связываемых вершин

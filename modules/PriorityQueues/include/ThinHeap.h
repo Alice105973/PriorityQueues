@@ -22,20 +22,25 @@ struct ThinElem {
     num = _num;
     weight = _weight;
   }
+  ThinElem* parent();  // найти родителя
+  bool br_violation();  // проверка на братское нарушение
+  bool p_violation();  // проверка на родительское нарушение
   bool isThin();  // проверка на тонкость
-  void link(ThinElem* A);
-  void relax(int v, int uv);  // релаксация
-  void decreaseKey(int newWeight);  // уменишение ключа
+  void link(ThinElem* A);  // соединить деревья
 };
 
 class ThinHeap {
   ThinElem* first = NULL;  // первый узел корневого списка
   ThinElem* last = NULL;  // последний узел корневого списка
-  int n;  // количество узлов
+  int n = 0;  // количество узлов
 public:
   ThinHeap() {}
+  int getN() { return n; }
+  bool isEmpty() { if (first == NULL) return true; else return false; }
   void insert(ThinElem* x);  // вставка нового элемента
   pair<int, int> extractMin();  // извлечь минимум
+  void decreaseKey(ThinElem* x, int newWeight);  // уменьшение ключа
+  void relax(int vweight, ThinElem* u, int uvweight);  // релаксация
 
   friend vector<int> Thin_Dijkstra(const vector < vector<pair<int, int>>>& graph);
 };

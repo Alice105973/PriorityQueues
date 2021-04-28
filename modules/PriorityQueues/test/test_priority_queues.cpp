@@ -114,6 +114,15 @@ TEST(no_exceptions, can_use_Dijkstra_on_FibHeap) {
   ASSERT_NO_THROW(Fib_Dijkstra(g));
 }
 
+TEST(no_exceptions, can_use_Dijkstra_on_ThinHeap) {
+  // Arrange
+  std::vector<std::vector<std::pair<int, int>>> g
+    = generateGraph(1000, 20000);
+
+  // Act & Assert
+  ASSERT_NO_THROW(Thin_Dijkstra(g));
+}
+
 TEST(correctness, correct_DHeap_build) {
   // Arrange
   DHeap H;
@@ -380,6 +389,52 @@ TEST(correctness, correct_FibHeap_Dijkstra) {
   ASSERT_EQ(Fib_Dijkstra(graph), S);
 }
 
+TEST(correctness, correct_ThinHeap_Dijkstra) {
+  // Arrange
+  std::vector<std::vector<std::pair<int, int>>> graph(10);
+  std::vector<int> S(10);
+  graph[0].push_back(std::pair<int, int>(1, 1));
+  graph[0].push_back(std::pair<int, int>(2, 0));
+  graph[0].push_back(std::pair<int, int>(6, 5));
+  graph[0].push_back(std::pair<int, int>(8, 9));
+  graph[1].push_back(std::pair<int, int>(9, 13));
+  graph[1].push_back(std::pair<int, int>(0, 1));
+  graph[1].push_back(std::pair<int, int>(5, 1));
+  graph[2].push_back(std::pair<int, int>(0, 0));
+  graph[2].push_back(std::pair<int, int>(8, 1));
+  graph[2].push_back(std::pair<int, int>(4, 4));
+  graph[2].push_back(std::pair<int, int>(3, 3));
+  graph[3].push_back(std::pair<int, int>(2, 3));
+  graph[3].push_back(std::pair<int, int>(7, 3));
+  graph[4].push_back(std::pair<int, int>(7, 1));
+  graph[4].push_back(std::pair<int, int>(2, 4));
+  graph[4].push_back(std::pair<int, int>(8, 1));
+  graph[5].push_back(std::pair<int, int>(6, 1));
+  graph[5].push_back(std::pair<int, int>(1, 1));
+  graph[6].push_back(std::pair<int, int>(5, 1));
+  graph[6].push_back(std::pair<int, int>(0, 5));
+  graph[7].push_back(std::pair<int, int>(4, 1));
+  graph[7].push_back(std::pair<int, int>(3, 3));
+  graph[8].push_back(std::pair<int, int>(0, 9));
+  graph[8].push_back(std::pair<int, int>(2, 1));
+  graph[8].push_back(std::pair<int, int>(4, 1));
+  graph[9].push_back(std::pair<int, int>(1, 13));
+
+  S[0] = 0;
+  S[1] = 1;
+  S[2] = 0;
+  S[3] = 3;
+  S[4] = 2;
+  S[5] = 2;
+  S[6] = 3;
+  S[7] = 3;
+  S[8] = 1;
+  S[9] = 14;
+
+  // Act & Assert
+  ASSERT_EQ(Thin_Dijkstra(graph), S);
+}
+
 TEST(correctness, eq_res_on_large_graph_DHeap) {
   // Arrange
   std::vector<std::vector<std::pair<int, int>>> g
@@ -405,4 +460,13 @@ TEST(correctness, eq_res_on_large_graph_FibHeap) {
 
   // Act & Assert
   ASSERT_EQ(Dijkstra(g), Fib_Dijkstra(g));
+}
+
+TEST(correctness, eq_res_on_large_graph_ThinHeap) {
+  // Arrange
+  std::vector<std::vector<std::pair<int, int>>> g
+    = generateGraph(1000, 20000);
+
+  // Act & Assert
+  ASSERT_EQ(Dijkstra(g), Thin_Dijkstra(g));
 }
